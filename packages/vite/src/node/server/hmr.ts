@@ -29,8 +29,6 @@ export const debugHmr = createDebugger('vite:hmr')
 
 const whitespaceRE = /\s/
 
-// comment
-
 const normalizedClientDir = normalizePath(CLIENT_DIR)
 
 export interface HmrOptions {
@@ -205,7 +203,7 @@ export async function handleHMRUpdate(
 
   // (dev only) the client itself cannot be hot updated.
   if (file.startsWith(withTrailingSlash(normalizedClientDir))) {
-    environments.forEach(({ config, hot }) =>
+    environments.forEach(({ hot }) =>
       hot.send({
         type: 'full-reload',
         path: '*',
@@ -372,10 +370,9 @@ export async function handleHMRUpdate(
           )
           environment.hot.send({
             type: 'full-reload',
-            path: environment.config.server.middlewareMode
+            path: config.server.middlewareMode
               ? '*'
-              : '/' +
-                normalizePath(path.relative(environment.config.root, file)),
+              : '/' + normalizePath(path.relative(config.root, file)),
           })
         } else {
           // loaded but not in the module graph, probably not js
@@ -386,7 +383,7 @@ export async function handleHMRUpdate(
         return
       }
 
-      updateModules(environment, file, context.modules, timestamp)
+      updateModules(environment, shortFile, context.modules, timestamp)
     } catch (err) {
       environment.hot.send({
         type: 'error',
