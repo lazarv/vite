@@ -29,6 +29,8 @@ export const debugHmr = createDebugger('vite:hmr')
 
 const whitespaceRE = /\s/
 
+// comment
+
 const normalizedClientDir = normalizePath(CLIENT_DIR)
 
 export interface HmrOptions {
